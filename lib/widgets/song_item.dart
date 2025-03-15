@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:home_assignment_app/model/song.dart';
+import 'package:home_assignment_app/widgets/song_screen.dart';
 
 class SongItem extends StatelessWidget {
   const SongItem({required this.song, super.key});
@@ -8,7 +9,19 @@ class SongItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return GestureDetector(
+      onTap: () {
+        // Navigation vers l'écran des détails
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SongScreen(song: song),
+          ),
+        );
+      },
+    
+    
+    child: Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
@@ -19,7 +32,6 @@ class SongItem extends StatelessWidget {
             Row(
               children: [
                 Text(song.artist),
-                const Spacer(),
                 const SizedBox(width: 10),
                 Text(song.duration),
                 
@@ -28,7 +40,7 @@ class SongItem extends StatelessWidget {
           ],
         ),
       )
-    );
+    ),);
   }
 
 }
