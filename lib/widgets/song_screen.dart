@@ -2,37 +2,49 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:home_assignment_app/model/song.dart';
 
-class SongScreen extends StatelessWidget {
-  SongScreen({required this.song, super.key});
+class SongScreen extends StatefulWidget {
+  const SongScreen({required this.song, super.key});
 
   final Song song;
+  @override
+  State<StatefulWidget> createState() {
+    return SongState();
+  }
+
+}
+
+class SongState extends State<SongScreen> {
+
+  
   bool songPlaying = false;
 
   final player = AudioPlayer();
 
   void _playSong() async {
     if(!songPlaying){
-      await player.play(AssetSource(song.url));
       songPlaying=true;
+      await player.play(AssetSource(widget.song.url));
     }
     else{
       player.pause();
       songPlaying=false;
     }
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
-      title: Text(song.title),
-      actions: [IconButton(onPressed: _playSong, icon: const Icon(Icons.play_arrow))],
+      title: Text(widget.song.title),
+      actions: [IconButton(onPressed: _playSong, icon: Icon(songPlaying ? Icons.pause : Icons.play_arrow))],
       ),
       body: Center(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(song.artist),
+        Text(widget.song.artist),
         const SizedBox(height: 15),
-        Text(song.duration)
+        Text(widget.song.duration)
       ],),),);
   }
 
