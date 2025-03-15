@@ -11,7 +11,6 @@ class SongItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigation vers l'écran des détails
         Navigator.push(
           context,
           MaterialPageRoute(
