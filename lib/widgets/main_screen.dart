@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:home_assignment_app/model/song.dart';
 import 'package:home_assignment_app/widgets/new_song.dart';
+import 'package:home_assignment_app/widgets/notifications.dart';
 import 'package:home_assignment_app/widgets/song_list.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,13 +21,14 @@ class _MainState extends State<MainScreen> {
 
   List<Song> songList = [];
   
+  final Notifications _notifications = Notifications();
 
   var isLoading = true;
 
   @override
   void initState(){
     super.initState();
-    _loadItems();
+    _loadItems(); 
   }
 
   Future _loadItems() async {
@@ -78,6 +80,7 @@ class _MainState extends State<MainScreen> {
         return;
       }
     song.id = responseData["name"];
+    _notifications.newSongNotification(song.title);
     setState(() {
       songList.add(song);
     });
@@ -97,9 +100,9 @@ class _MainState extends State<MainScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Expense Deleted"), 
       duration: const Duration(seconds: 3),
-      action: SnackBarAction(label: "Undo", onPressed: () async {
-
-    final response = await http.post(url, 
+      action: SnackBarAction(label: "Undo", onPressed: () {
+        final url = Uri.https('hba-cpd-2025-default-rtdb.europe-west1.firebasedatabase.app', 'song-list.json');
+    http.post(url, 
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'title': song.title,
